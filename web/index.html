@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenith KV Engine | Distributed In-Memory Storage & Raft Consensus</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ambient-glow"></div>
+
+    <header>
+        <div class="brand">
+            <span class="badge">SYSTEMS ARCHITECTURE LAB</span>
+            <h1>Zenith In-Memory KV Engine</h1>
+            <p class="subtitle">Distributed Storage Engine with Write-Ahead Logging (WAL) & Raft Consensus Protocol</p>
+        </div>
+        <div class="header-actions">
+            <button id="healBtn" class="btn btn-secondary">Heal Network</button>
+            <button id="compactBtn" class="btn btn-secondary">Trigger WAL Compaction</button>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- 3 Raft Nodes Cluster Status -->
+        <section class="cluster-section">
+            <div class="section-title-row">
+                <h2>Raft Consensus Cluster Topology</h2>
+                <div class="status-pill" id="quorumStatus">QUORUM HEALTHY (3/3)</div>
+            </div>
+
+            <div class="nodes-grid" id="nodesContainer">
+                <!-- Populated dynamically: Node 1, Node 2, Node 3 -->
+            </div>
+        </section>
+
+        <!-- Two Column: Terminal REPL and Storage Data Inspector -->
+        <div class="two-col-layout">
+            <!-- Left: Live Interactive Console REPL -->
+            <section class="card repl-card">
+                <div class="card-header">
+                    <h3>Interactive Redis/RESP Terminal REPL</h3>
+                    <span class="badge badge-accent">Direct Engine Pipe</span>
+                </div>
+                <div class="repl-terminal" id="terminalOutput">
+                    <div class="terminal-line text-muted">Zenith KV Engine v1.0.0 (Raft Consensus Enabled)</div>
+                    <div class="terminal-line text-muted">Type commands: SET key value, GET key, ZADD set score member, KEYS *, HSET hash field val</div>
+                </div>
+                <form id="replForm" class="repl-input-row">
+                    <span class="prompt-symbol">&gt;</span>
+                    <input type="text" id="replInput" placeholder="SET user:101 'Jerry Nabasu' [or GET, KEYS *, ZADD, LPUSH]" autocomplete="off">
+                    <button type="submit" class="btn btn-primary">Execute</button>
+                </form>
+            </section>
+
+            <!-- Right: Storage Engine Internals & Data Structures -->
+            <section class="card inspector-card">
+                <div class="card-header">
+                    <h3>Storage Internals & Data Structures</h3>
+                    <span class="badge badge-green">Memory Layout</span>
+                </div>
+                <div class="internals-info">
+                    <div class="arch-box">
+                        <div class="arch-title">SkipList Sorted Set (O(log n))</div>
+                        <p class="arch-desc">Probabilistic multi-level forward pointers indexing scores with logarithmic search and range scan efficiency.</p>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-title">Write-Ahead Log (WAL) Durability</div>
+                        <p class="arch-desc">CRC32-verified binary frames committed to append-only disk before in-memory mutation. Fsync durability ensures zero data loss upon crash recovery.</p>
+                    </div>
+                    <div class="arch-box">
+                        <div class="arch-title">Raft Quorum Consensus</div>
+                        <p class="arch-desc">Heartbeats pulse every 200ms. If the leader is isolated, remaining majority automatically initiates candidate election and continues serving linearizable reads/writes.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>Zenith KV Engine | Designed & Engineered by <a href="https://github.com/JayNabasu" target="_blank">Jerry A. Nabasu (@JayNabasu)</a></p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
